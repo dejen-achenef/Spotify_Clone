@@ -80,3 +80,5 @@ function Body({ spotify }) {
 }
 
 export default Body;
+
+// Commit 14: Create main content area
