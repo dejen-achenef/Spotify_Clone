@@ -69,3 +69,5 @@ function App() {
 }
 
 export default App;
+
+// Commit 12: Add navigation menu
