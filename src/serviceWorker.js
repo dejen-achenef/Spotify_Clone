@@ -139,3 +139,5 @@ export function unregister() {
       });
   }
 }
+
+// Commit 26: Create artist profiles
