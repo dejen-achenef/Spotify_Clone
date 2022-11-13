@@ -32,3 +32,5 @@ function Sidebar() {
 }
 
 export default Sidebar;
+
+// Commit 28: Implement authentication
