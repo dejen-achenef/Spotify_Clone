@@ -3,3 +3,5 @@ User-agent: *
 Disallow:
 
 // Commit 10: Create component library
+
+// Commit 44: Create search functionality
