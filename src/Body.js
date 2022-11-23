@@ -82,3 +82,5 @@ function Body({ spotify }) {
 export default Body;
 
 // Commit 14: Create main content area
+
+// Commit 48: Add filter options
