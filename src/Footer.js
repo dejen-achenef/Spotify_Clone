@@ -134,3 +134,5 @@ function Footer({ spotify }) {
 export default Footer;
 
 // Commit 16: Build playback controls
+
+// Commit 50: Create music library
