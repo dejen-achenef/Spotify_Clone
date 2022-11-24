@@ -28,3 +28,5 @@ function Header({ spotify }) {
 export default Header;
 
 // Commit 18: Add skip controls
+
+// Commit 52: Implement albums
