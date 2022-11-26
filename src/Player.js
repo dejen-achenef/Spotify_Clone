@@ -19,3 +19,5 @@ function Player({ spotify }) {
 export default Player;
 
 // Commit 24: Add song cards
+
+// Commit 58: Implement new releases
