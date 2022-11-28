@@ -68,3 +68,5 @@ const reducer = (state, action) => {
 export default reducer;
 
 // Commit 25: Implement album art
+
+// Commit 59: Create charts
