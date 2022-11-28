@@ -141,3 +141,5 @@ export function unregister() {
 }
 
 // Commit 26: Create artist profiles
+
+// Commit 60: Add top tracks
