@@ -13,3 +13,5 @@ function SidebarOption({ option = "test", Icon }) {
 export default SidebarOption;
 
 // Commit 30: Add signup form
+
+// Commit 64: Implement activity feed
