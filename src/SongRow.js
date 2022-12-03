@@ -20,3 +20,5 @@ function SongRow({ track, playSong }) {
 export default SongRow;
 
 // Commit 32: Create user dashboard
+
+// Commit 66: Add social features
