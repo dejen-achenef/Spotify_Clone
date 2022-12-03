@@ -28,3 +28,5 @@ export const accessUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${r
 )}&response_type=token&show_dialog=true`;
 
 // Commit 33: Add personalized content
+
+// Commit 67: Implement following
