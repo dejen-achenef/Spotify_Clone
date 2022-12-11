@@ -30,3 +30,5 @@ export default Header;
 // Commit 18: Add skip controls
 
 // Commit 52: Implement albums
+
+// Commit 86: Create gapless playback
