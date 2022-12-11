@@ -136,3 +136,5 @@ export default Footer;
 // Commit 16: Build playback controls
 
 // Commit 50: Create music library
+
+// Commit 84: Add audio effects
