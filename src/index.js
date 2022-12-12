@@ -23,3 +23,5 @@ serviceWorker.unregister();
 // Commit 20: Implement progress bar
 
 // Commit 54: Add podcasts
+
+// Commit 88: Implement loudness
