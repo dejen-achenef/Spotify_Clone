@@ -15,3 +15,5 @@ export default SidebarOption;
 // Commit 30: Add signup form
 
 // Commit 64: Implement activity feed
+
+// Commit 98: Create karaoke mode
