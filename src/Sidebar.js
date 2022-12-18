@@ -36,3 +36,5 @@ export default Sidebar;
 // Commit 28: Implement authentication
 
 // Commit 62: Create genres
+
+// Commit 96: Add lyrics display
