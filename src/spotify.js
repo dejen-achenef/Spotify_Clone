@@ -30,3 +30,5 @@ export const accessUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${r
 // Commit 33: Add personalized content
 
 // Commit 67: Implement following
+
+// Commit 101: Create accessibility
