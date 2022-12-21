@@ -13,3 +13,5 @@ export const useStateValue = () => useContext(StateContext);
 // Commit 34: Implement recommendations
 
 // Commit 68: Create profile pages
+
+// Commit 102: Add screen reader
