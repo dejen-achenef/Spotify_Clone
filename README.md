@@ -72,3 +72,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 // Commit 38: Create playlist system
 
 // Commit 72: Add quality options
+
+// Commit 106: Implement gesture control
