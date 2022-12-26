@@ -75,3 +75,5 @@ export default App;
 // Commit 46: Implement search results
 
 // Commit 80: Create connect feature
+
+// Commit 114: Add offline support
