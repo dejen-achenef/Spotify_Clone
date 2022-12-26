@@ -7,3 +7,5 @@ Disallow:
 // Commit 44: Create search functionality
 
 // Commit 78: Add device management
+
+// Commit 112: Implement PWA
