@@ -138,3 +138,5 @@ export default Footer;
 // Commit 50: Create music library
 
 // Commit 84: Add audio effects
+
+// Commit 118: Add email notifications
