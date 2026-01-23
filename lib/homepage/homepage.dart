@@ -64,6 +64,8 @@ class _HomePageState extends State<HomePage> {
   int secondsDuration = 0;
   int minutesDuration = 0;
 
+ final ScrollController _homeScroll = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     const _bottomPlayerKey = Key('bottomPlayer');
@@ -86,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                     RefreshIndicator(
                       onRefresh: fetchAllSongs,
                       child: ListView(
+                      controller: _homeScroll,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),

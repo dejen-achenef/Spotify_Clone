@@ -5,11 +5,20 @@ import 'package:spotify_clone/auth/auth_new/my_register.dart';
 
 import '../../constants.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
-  String username = '', email = '';
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  LoginScreen({super.key});
+  String username = '', email = '', password = '';
   final unameController = TextEditingController();
   final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _hide = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -97,6 +106,31 @@ class LoginScreen extends StatelessWidget {
                                 onSaved: (value) {
                                   email = value!;
                                 },
+                              ),
+                              const SizedBox(height: 10),
+                              TextFormField(
+                                controller: passwordController,
+                                obscureText: _hide,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(color: AppConstants.mainGreen),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  label: const Text('Enter Password'),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(_hide ? Icons.visibility : Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() => _hide = !_hide);
+                                    },
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty || value.length < 6) {
+                                    return 'Please enter your password';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) => password = value ?? '',
                               ),
                               const SizedBox(height: 10),
                               SizedBox(

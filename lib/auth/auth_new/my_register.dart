@@ -7,7 +7,14 @@ import '../../constants.dart';
 import '../../models/user.dart';
 import '../../providers/the_auth.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   RegisterScreen({
     super.key,
   });

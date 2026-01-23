@@ -66,7 +66,12 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() {
+  void logout() async {
+    _isLoggedIn = false;
++    final prefs = await SharedPreferences.getInstance();
++    await prefs.remove('token');
+    notifyListeners();
+  }
     _isLoggedIn = false;
     notifyListeners();
   }

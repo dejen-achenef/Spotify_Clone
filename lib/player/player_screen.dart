@@ -209,13 +209,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                         onPressed: () {
                                           showModalBottomSheet(
                                             context: context,
-                                            builder: (_) => ListView(
-                                              children: [
-                                                const ListTile(title: Text('Up Next')),
-                                                ...songProvider.queue
-                                                    .map((s) => ListTile(title: Text('${s.title} • ${s.artist}')))
-                                                    .toList(),
-                                              ],
+                                            builder: (_) => StatefulBuilder(
+                                              builder: (context, setModal) => ListView(
+                                                children: [
+                                                  const ListTile(title: Text('Up Next')),
+                                                  ...songProvider.queue.asMap().entries.map(
+                                                    (e) => ListTile(
+                                                      title: Text('${e.value.title} • ${e.value.artist}'),
+                                                      trailing: IconButton(
+                                                        icon: const Icon(Icons.remove_circle_outline),
+                                                        onPressed: () {
+                                                          songProvider.queue.removeAt(e.key);
+                                                          setModal(() {});
+                                                          setState(() {});
+                                                        },
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },

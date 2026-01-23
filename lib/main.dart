@@ -79,6 +79,13 @@ class _HomeState extends State<Home> {
   int cIndex = 0;
   DateTime? _lastBackPress;
 
+  void _scrollActiveTabToTop() {
+    if (cIndex == 0) {
+      // Home page has internal controller; use a notification
+      Scrollable.ensureVisible(context.findRenderObject() ?? context as Element, duration: const Duration(milliseconds: 300));
+    }
+  }
+
   List<BottomNavigationBarItem> navigationIcons() {
     return [
       BottomNavigationBarItem(
@@ -162,6 +169,10 @@ class _HomeState extends State<Home> {
         iconSize: 20,
         onTap: (int val) async {
           await HapticFeedback.selectionClick();
+          if (val == cIndex) {
+            _scrollActiveTabToTop();
+            return;
+          }
           setState(() {
             cIndex = val;
           });

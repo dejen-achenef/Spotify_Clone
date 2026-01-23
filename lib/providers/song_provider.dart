@@ -138,9 +138,30 @@ class SongProvider extends ChangeNotifier {
   IconData get playingIcon => _playingIcon;
 
  // Controls
+ Future<void> _savePrefs() async {
+   final p = await SharedPreferences.getInstance();
+   await p.setString('repeat-mode', repeatMode.name);
+   await p.setDouble('volume', _volume);
+ }
+
+ Future<void> loadPlaybackPrefs() async {
+   final p = await SharedPreferences.getInstance();
+   final rm = p.getString('repeat-mode');
+   if (rm != null) {
+     repeatMode = RepeatMode.values.firstWhere(
+       (e) => e.name == rm,
+       orElse: () => RepeatMode.off,
+     );
+   }
+   _volume = p.getDouble('volume') ?? 1.0;
+   _audioPlayer.setVolume(_volume);
+   notifyListeners();
+ }
+
  void toggleShuffle() {
    shuffle = !shuffle;
    notifyListeners();
+   _savePrefs();
  }
 
  void cycleRepeatMode() {
@@ -156,6 +177,7 @@ class SongProvider extends ChangeNotifier {
        break;
    }
    notifyListeners();
+   _savePrefs();
  }
 
  void toggleMute() {

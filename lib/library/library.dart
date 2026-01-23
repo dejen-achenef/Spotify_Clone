@@ -26,6 +26,15 @@ class _LibraryState extends State<Library> {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80),
           child: AppBar(
+            actions: [
+              PopupMenuButton<String>(
+                onSelected: (v) => setState(() {}),
+                itemBuilder: (context) => const [
+                  PopupMenuItem(value: 'az', child: Text('Sort A-Z')),
+                  PopupMenuItem(value: 'recent', child: Text('Sort by Recently Added')),
+                ],
+              )
+            ],
             bottom: TabBar(
               tabs: [
                 Text(
@@ -76,6 +85,7 @@ class LikedSongs extends StatefulWidget {
 }
 
 class _LikedSongsState extends State<LikedSongs> {
+ String _sort = 'recent';
   late List<Song> songs;
   late SongProvider songProv;
 
@@ -86,10 +96,17 @@ class _LikedSongsState extends State<LikedSongs> {
     fetchSongs();
   }
 
+ void _applySort() {
+   if (_sort == 'az') {
+     songs.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+   }
+ }
+
   void fetchSongs() async {
     songProv.fetchSongsFromStorage();
     //songs = songProv.likedSongs;
-    songs = widget.songs;
+    songs = [...widget.songs];
+    _applySort();
     setState(() {});
   }
 
@@ -102,7 +119,33 @@ class _LikedSongsState extends State<LikedSongs> {
         height: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: songs.isEmpty
+          child: Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             Row(
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                 const Text('Sort:'),
+                 const SizedBox(width: 8),
+                 DropdownButton<String>(
+                   value: _sort,
+                   items: const [
+                     DropdownMenuItem(value: 'recent', child: Text('Recently Added')),
+                     DropdownMenuItem(value: 'az', child: Text('A-Z')),
+                   ],
+                   onChanged: (v) {
+                     if (v == null) return;
+                     setState(() {
+                       _sort = v;
+                       fetchSongs();
+                     });
+                   },
+                 ),
+               ],
+             ),
+             const SizedBox(height: 8),
+             Expanded(
+               child: songs.isEmpty
               ? const Center(
                   child: Text('No Liked Songs so far'),
                 )
@@ -142,6 +185,7 @@ class _LikedSongsState extends State<LikedSongs> {
                       const SizedBox(height: 20),
                   itemCount: songs.length,
                 ),
+             ),
         ),
       ),
     );
