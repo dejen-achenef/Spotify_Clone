@@ -55,10 +55,12 @@ class _HorizontalListState extends State<HorizontalList> {
                     await Future.delayed(const Duration(milliseconds: 500));
                   }
                   if (mounted) {
+                    final song = widget.categorySongs[index];
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => PlayerScreen(
-                          song: widget.categorySongs[index],
+                          song: song,
+                          heroTag: 'art-${song.title}-${song.artist}',
                         ),
                       ),
                     );
@@ -67,11 +69,13 @@ class _HorizontalListState extends State<HorizontalList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      //url,
-                      widget.categorySongs[index].imageUrl!,
-                      width: 130,
-                      height: 130,
+                    Hero(
+                      tag: 'art-${widget.categorySongs[index].title}-${widget.categorySongs[index].artist}',
+                      child: Image.network(
+                        widget.categorySongs[index].imageUrl!,
+                        width: 130,
+                        height: 130,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -155,11 +159,13 @@ class _HorizontalListLocalState extends State<HorizontalListLocal> {
                       await Future.delayed(const Duration(milliseconds: 500));
                     }
                     if (mounted) {
+                      final song = widget.localSongs[index];
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => PlayerScreen(
-                            song: widget.localSongs[index],
+                            song: song,
                             isLocal: true,
+                            heroTag: 'art-${song.title}-${song.artist}',
                           ),
                         ),
                       );

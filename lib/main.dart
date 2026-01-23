@@ -13,6 +13,7 @@ import 'package:spotify_clone/providers/song_upload.dart';
 import 'package:spotify_clone/providers/the_auth.dart';
 import 'package:spotify_clone/search/search.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,6 +77,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int cIndex = 0;
+  DateTime? _lastBackPress;
 
   List<BottomNavigationBarItem> navigationIcons() {
     return [
@@ -86,7 +88,7 @@ class _HomeState extends State<Home> {
             'https://cdn0.iconfinder.com/data/icons/spotify-line-ui-kit/100/home-line-128.png',
             width: 25,
             height: 23,
-            color: Colors.grey,
+            color: cIndex == 0 ? Colors.white : Colors.grey,
           ),
         ),
         label: "Home",
@@ -98,7 +100,7 @@ class _HomeState extends State<Home> {
             'https://cdn0.iconfinder.com/data/icons/spotify-line-ui-kit/100/your-library-line-128.png',
             width: 25,
             height: 23,
-            color: Colors.grey,
+            color: cIndex == 1 ? Colors.white : Colors.grey,
           ),
         ),
         label: "Your Library",
@@ -110,7 +112,7 @@ class _HomeState extends State<Home> {
             'https://cdn0.iconfinder.com/data/icons/spotify-line-ui-kit/100/search-line-128.png',
             width: 25,
             height: 23,
-            color: Colors.grey,
+            color: cIndex == 2 ? Colors.white : Colors.grey,
           ),
         ),
         label: "Search",
@@ -118,7 +120,13 @@ class _HomeState extends State<Home> {
       BottomNavigationBarItem(
         icon: Padding(
           padding: const EdgeInsets.all(0),
-          child: SvgPicture.asset('assets/svg/user-profile.svg'),
+          child: SvgPicture.asset(
+            'assets/svg/user-profile.svg',
+            colorFilter: ColorFilter.mode(
+              cIndex == 3 ? Colors.white : Colors.grey,
+              BlendMode.srcIn,
+            ),
+          ),
         ),
         label: "Me",
       ),
@@ -133,14 +141,27 @@ class _HomeState extends State<Home> {
       const Search(),
       ProfileScreen(),
     ];
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        final now = DateTime.now();
+        if (_lastBackPress == null || now.difference(_lastBackPress!) > const Duration(seconds: 2)) {
+          _lastBackPress = now;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Press back again to exit')),
+          );
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
       backgroundColor: Colors.black,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: cIndex,
         selectedFontSize: 10,
         unselectedFontSize: 10,
         iconSize: 20,
-        onTap: (int val) {
+        onTap: (int val) async {
+          await HapticFeedback.selectionClick();
           setState(() {
             cIndex = val;
           });
@@ -152,6 +173,6 @@ class _HomeState extends State<Home> {
         items: navigationIcons(),
       ),
       body: _pages[cIndex],
-    );
+    ));
   }
 }

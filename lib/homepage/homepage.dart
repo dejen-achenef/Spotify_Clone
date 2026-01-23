@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     songProvider = Provider.of<SongProvider>(context, listen: false);
   }
 
-  void fetchAllSongs() async {
+  Future<void> fetchAllSongs() async {
     final api = Api();
     List<Song> fetched = await api.fetchAllSongs();
     List<Song> fetched2 = await api.fetchLocalSongs();
@@ -83,7 +83,9 @@ class _HomePageState extends State<HomePage> {
                 decoration: const BoxDecoration(shape: BoxShape.rectangle),
                 child: Stack(
                   children: [
-                    ListView(
+                    RefreshIndicator(
+                      onRefresh: fetchAllSongs,
+                      child: ListView(
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
@@ -149,6 +151,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
+                         )
                         ),
                       ],
                     ),

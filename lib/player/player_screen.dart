@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:spotify_clone/homepage/services/api.dart';
@@ -9,6 +11,7 @@ import 'package:spotify_clone/providers/song_provider.dart';
 import '../models/song.dart';
 
 class PlayerScreen extends StatefulWidget {
+  final String? heroTag;
   PlayerScreen({
     super.key,
     this.isLocal,
@@ -39,6 +42,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
       fetchSong();
     }
     songProvider = Provider.of<SongProvider>(context, listen: false);
+
+    // initialize liked state from provider storage
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final exists = songProvider.likedSongs.any(
+          (s) => s.artist == widget.song.artist && s.title == widget.song.title);
+      setState(() {
+        isLiked = exists;
+      });
+    });
   }
 
   void fetchSong() async {
@@ -174,6 +186,40 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                           ),
                                         ),
                                       ),
+                                      IconButton(
+                                        icon: Icon(
+                                          songProvider.shuffle ? Icons.shuffle_on : Icons.shuffle,
+                                          size: 20,
+                                        ),
+                                        onPressed: () => songProvider.toggleShuffle(),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          songProvider.repeatMode == RepeatMode.off
+                                              ? Icons.repeat
+                                              : songProvider.repeatMode == RepeatMode.all
+                                                  ? Icons.repeat_on
+                                                  : Icons.repeat_one_on,
+                                          size: 20,
+                                        ),
+                                        onPressed: () => songProvider.cycleRepeatMode(),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.queue_music, size: 20),
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            builder: (_) => ListView(
+                                              children: [
+                                                const ListTile(title: Text('Up Next')),
+                                                ...songProvider.queue
+                                                    .map((s) => ListTile(title: Text('${s.title} • ${s.artist}')))
+                                                    .toList(),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -187,6 +233,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       } else {
                                         songProvider.likeSong(widget.song);
                                       }
+                                      HapticFeedback.lightImpact();
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Added to Liked Songs')),
+                                      );
                                     }
 
                                     if (isDisliked) {
@@ -212,6 +262,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       } else {
                                         songProvider.dislikeSong(widget.song);
                                       }
+                                      HapticFeedback.lightImpact();
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Removed from Liked Songs')),
+                                      );
                                     }
 
                                     if (isLiked) {
@@ -265,7 +319,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Align(
