@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,49 +14,40 @@ class Auth extends ChangeNotifier {
   User get authedUser => _user;
   String get userToken => _token;
 
-  final FlutterSecureStorage storage = FlutterSecureStorage();
+  // Keep a secure storage instance available if needed in future
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  void register(User user) async {
-    print(user.toString());
-
-    AuthService authService = AuthService();
-
-    var (token, stCode) = await authService.registerUser(user);
+  Future<void> register(User user) async {
+    final authService = AuthService();
+    final (token, stCode) = await authService.registerUser(user);
 
     if (stCode == 201) {
       _isLoggedIn = true;
       _token = token;
-      _user = user;
-      _user.token = token;
-      storeToken(token);
-      print(token);
+      _user = user..token = token;
+      await storeToken(token);
       notifyListeners();
     }
   }
 
   Future<void> tryToken(String token) async {
-    AuthService authService = AuthService();
-    var authedUser = await authService.loginWithToken(token);
+    final authService = AuthService();
+    final authedUser = await authService.loginWithToken(token);
 
     if (authedUser != null) {
-      _user = authedUser;
+      _user = authedUser..token = token;
       _isLoggedIn = true;
       _token = token;
-      _user.token = token;
-      print('user with token: $authedUser');
       notifyListeners();
     }
   }
 
-  void storeToken(String tokenValue) async {
+  Future<void> storeToken(String tokenValue) async {
     final prefs = await SharedPreferences.getInstance();
     try {
-      //await storage.write(key: 'token', value: tokenValue);
-      await prefs
-          .setString('token', tokenValue)
-          .then((value) => print('saved token: $tokenValue'));
+      await prefs.setString('token', tokenValue);
     } catch (e) {
-      print(e);
+      debugPrint('failed to store token: $e');
     }
   }
 
@@ -66,13 +56,10 @@ class Auth extends ChangeNotifier {
     notifyListeners();
   }
 
-  void logout() async {
+  Future<void> logout() async {
     _isLoggedIn = false;
-+    final prefs = await SharedPreferences.getInstance();
-+    await prefs.remove('token');
-    notifyListeners();
-  }
-    _isLoggedIn = false;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
     notifyListeners();
   }
 }
