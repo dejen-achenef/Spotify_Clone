@@ -30,4 +30,5 @@ class AppStrings {
   static const String edmSongsTitle = 'EDM';
   static const String tryAgain = 'Try again';
   static const String loading = 'Loading...';
+  static const String noResults = 'No results found';
 }
