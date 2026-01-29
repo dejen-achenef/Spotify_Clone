@@ -20,4 +20,5 @@ class AppStrings {
   static const String homeTab = 'Home';
   static const String libraryTab = 'Your Library';
   static const String searchTab = 'Search';
+  static const String profileTab = 'Me';
 }
