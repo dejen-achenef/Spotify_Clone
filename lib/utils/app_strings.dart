@@ -45,4 +45,5 @@ class AppStrings {
   static const String welcome = 'Welcome';
   static const String welcomeBack = 'Welcome back';
   static const String confirm = 'Confirm';
+  static const String save = 'Save';
 }
