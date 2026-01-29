@@ -32,4 +32,5 @@ class AppStrings {
   static const String loading = 'Loading...';
   static const String noResults = 'No results found';
   static const String play = 'Play';
+  static const String pause = 'Pause';
 }
