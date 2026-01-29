@@ -10,13 +10,27 @@ class SearchBox extends StatefulWidget {
 
 class _SearchBoxState extends State<SearchBox> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
   List<String> _recent = [];
   bool _showRecent = false;
 
   @override
   void initState() {
     super.initState();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus && mounted) {
+        setState(() => _showRecent = false);
+      }
+    });
     _loadRecent();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _loadRecent() async {
@@ -59,6 +73,7 @@ class _SearchBoxState extends State<SearchBox> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
+                    focusNode: _focusNode,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Artists, songs or podcasts',
