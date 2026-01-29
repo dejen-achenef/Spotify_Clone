@@ -18,4 +18,5 @@ class AppStrings {
   static const String clearRecent = 'Clear recent';
   static const String topGenresTitle = 'your top genres';
   static const String homeTab = 'Home';
+  static const String libraryTab = 'Your Library';
 }
