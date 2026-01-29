@@ -13,4 +13,5 @@ class AppStrings {
   static const String submitButton = 'Submit';
   static const String cancelButton = 'Cancel';
   static const String searchTitle = 'Search';
+  static const String searchHint = 'Artists, songs or podcasts';
 }
