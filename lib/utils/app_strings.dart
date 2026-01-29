@@ -12,4 +12,5 @@ class AppStrings {
   static const String usernameLabel = 'Username';
   static const String submitButton = 'Submit';
   static const String cancelButton = 'Cancel';
+  static const String searchTitle = 'Search';
 }
