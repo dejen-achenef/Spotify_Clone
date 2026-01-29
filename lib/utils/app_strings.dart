@@ -29,4 +29,5 @@ class AppStrings {
   static const String englishSongsTitle = 'English songs';
   static const String edmSongsTitle = 'EDM';
   static const String tryAgain = 'Try again';
+  static const String loading = 'Loading...';
 }
