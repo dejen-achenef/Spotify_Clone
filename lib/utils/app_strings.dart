@@ -44,4 +44,5 @@ class AppStrings {
   static const String logout = 'Log out';
   static const String welcome = 'Welcome';
   static const String welcomeBack = 'Welcome back';
+  static const String confirm = 'Confirm';
 }
