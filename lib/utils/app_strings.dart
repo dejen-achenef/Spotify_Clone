@@ -50,4 +50,5 @@ class AppStrings {
   static const String remove = 'Remove';
   static const String ok = 'OK';
   static const String done = 'Done';
+  static const String close = 'Close';
 }
