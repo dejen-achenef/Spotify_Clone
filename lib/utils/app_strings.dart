@@ -49,4 +49,5 @@ class AppStrings {
   static const String delete = 'Delete';
   static const String remove = 'Remove';
   static const String ok = 'OK';
+  static const String done = 'Done';
 }
