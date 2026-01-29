@@ -9,4 +9,5 @@ class AppStrings {
   static const String registerTitle = 'Sign Up';
   static const String emailLabel = 'Email';
   static const String passwordLabel = 'Password';
+  static const String usernameLabel = 'Username';
 }
