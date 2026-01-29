@@ -38,4 +38,5 @@ class AppStrings {
   static const String shuffle = 'Shuffle';
   static const String repeat = 'Repeat';
   static const String share = 'Share';
+  static const String download = 'Download';
 }
