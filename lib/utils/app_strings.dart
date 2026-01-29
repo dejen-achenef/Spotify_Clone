@@ -19,4 +19,5 @@ class AppStrings {
   static const String topGenresTitle = 'your top genres';
   static const String homeTab = 'Home';
   static const String libraryTab = 'Your Library';
+  static const String searchTab = 'Search';
 }
