@@ -16,4 +16,5 @@ class AppStrings {
   static const String searchHint = 'Artists, songs or podcasts';
   static const String recentSearchesTitle = 'Recent searches';
   static const String clearRecent = 'Clear recent';
+  static const String topGenresTitle = 'your top genres';
 }
