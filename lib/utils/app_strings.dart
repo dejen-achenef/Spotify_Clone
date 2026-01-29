@@ -5,4 +5,5 @@ class AppStrings {
   AppStrings._();
 
   static const String appName = 'Spotify Clone';
+  static const String loginTitle = 'Log In';
 }
