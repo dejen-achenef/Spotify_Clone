@@ -41,4 +41,5 @@ class AppStrings {
   static const String download = 'Download';
   static const String settings = 'Settings';
   static const String editProfile = 'Edit profile';
+  static const String logout = 'Log out';
 }
