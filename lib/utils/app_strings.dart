@@ -23,4 +23,5 @@ class AppStrings {
   static const String profileTab = 'Me';
   static const String exitPrompt = 'Press back again to exit';
   static const String profileLoggedOut = 'Log in to see your profile';
+  static const String profileLoginButton = 'Log In';
 }
