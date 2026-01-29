@@ -8,4 +8,5 @@ class AppStrings {
   static const String loginTitle = 'Log In';
   static const String registerTitle = 'Sign Up';
   static const String emailLabel = 'Email';
+  static const String passwordLabel = 'Password';
 }
