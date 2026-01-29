@@ -35,4 +35,5 @@ class AppStrings {
   static const String pause = 'Pause';
   static const String next = 'Next';
   static const String previous = 'Previous';
+  static const String shuffle = 'Shuffle';
 }
