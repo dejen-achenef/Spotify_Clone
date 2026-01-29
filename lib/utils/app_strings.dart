@@ -33,4 +33,5 @@ class AppStrings {
   static const String noResults = 'No results found';
   static const String play = 'Play';
   static const String pause = 'Pause';
+  static const String next = 'Next';
 }
