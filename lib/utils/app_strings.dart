@@ -39,4 +39,5 @@ class AppStrings {
   static const String repeat = 'Repeat';
   static const String share = 'Share';
   static const String download = 'Download';
+  static const String settings = 'Settings';
 }
