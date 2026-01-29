@@ -10,4 +10,5 @@ class AppStrings {
   static const String emailLabel = 'Email';
   static const String passwordLabel = 'Password';
   static const String usernameLabel = 'Username';
+  static const String submitButton = 'Submit';
 }
