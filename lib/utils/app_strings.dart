@@ -43,4 +43,5 @@ class AppStrings {
   static const String editProfile = 'Edit profile';
   static const String logout = 'Log out';
   static const String welcome = 'Welcome';
+  static const String welcomeBack = 'Welcome back';
 }
