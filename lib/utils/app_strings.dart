@@ -37,4 +37,5 @@ class AppStrings {
   static const String previous = 'Previous';
   static const String shuffle = 'Shuffle';
   static const String repeat = 'Repeat';
+  static const String share = 'Share';
 }
