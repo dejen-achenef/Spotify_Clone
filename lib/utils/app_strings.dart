@@ -26,4 +26,5 @@ class AppStrings {
   static const String profileLoginButton = 'Log In';
   static const String localArtistsTitle = 'Local Artists';
   static const String popEthiopianTitle = 'Pop Ethiopian';
+  static const String englishSongsTitle = 'English songs';
 }
