@@ -25,4 +25,5 @@ class AppStrings {
   static const String profileLoggedOut = 'Log in to see your profile';
   static const String profileLoginButton = 'Log In';
   static const String localArtistsTitle = 'Local Artists';
+  static const String popEthiopianTitle = 'Pop Ethiopian';
 }
