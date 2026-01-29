@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
   static const mainGreen = Color.fromARGB(255, 30, 215, 96);
+
+  static const EdgeInsets screenPadding = EdgeInsets.all(10);
+  static const Duration shortAnimation = Duration(milliseconds: 250);
 }
 
 //const baseUrl = 'http://localhost:8000/api';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_clone/constants.dart';
 import 'package:spotify_clone/search/search_cards.dart';
 
 import 'widgets/search_box.dart';
@@ -12,7 +13,7 @@ class Search extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(color: Colors.black),
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: AppConstants.screenPadding,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
