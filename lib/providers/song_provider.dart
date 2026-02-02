@@ -17,6 +17,8 @@ class SongProvider extends ChangeNotifier {
  RepeatMode repeatMode = RepeatMode.off;
  double _volume = 1.0;
  double _previousVolume = 1.0;
+ // playback rate (1.0 == normal)
+ double _playbackRate = 1.0;
  Timer? _sleepTimer;
 
  // Queue and history
@@ -249,8 +251,9 @@ class SongProvider extends ChangeNotifier {
    final p = await SharedPreferences.getInstance();
    await p.setString('repeat-mode', repeatMode.name);
    await p.setDouble('volume', _volume);
+   await p.setDouble('playback-rate', _playbackRate);
  }
-
+ 
  Future<void> loadPlaybackPrefs() async {
    final p = await SharedPreferences.getInstance();
    final rm = p.getString('repeat-mode');
@@ -261,11 +264,15 @@ class SongProvider extends ChangeNotifier {
      );
    }
    _volume = p.getDouble('volume') ?? 1.0;
+   _playbackRate = p.getDouble('playback-rate') ?? 1.0;
    _audioPlayer.setVolume(_volume);
-   notifyListeners();
- }
-
- void toggleShuffle() {
+   // apply playback rate
+   try {
+     // Most audioplayers versions support passing a double
+     _audioPlayer.setPlaybackRate(_playbackRate);
+   } catch (e) {
+     // ignore if not supported
+   }
    shuffle = !shuffle;
    notifyListeners();
    _savePrefs();
@@ -295,6 +302,18 @@ class SongProvider extends ChangeNotifier {
      _volume = _previousVolume;
    }
    _audioPlayer.setVolume(_volume);
+   notifyListeners();
+ }
+
+ // Playback rate controls
+ double get playbackRate => _playbackRate;
+
+ Future<void> setPlaybackRate(double rate) async {
+   _playbackRate = rate;
+   try {
+     _audioPlayer.setPlaybackRate(_playbackRate);
+   } catch (e) {}
+   await _savePrefs();
    notifyListeners();
  }
 
