@@ -261,6 +261,7 @@ class SongProvider extends ChangeNotifier {
    await p.setString('repeat-mode', repeatMode.name);
    await p.setDouble('volume', _volume);
    await p.setDouble('playback-rate', _playbackRate);
+   await p.setBool('shuffle', shuffle);
  }
  
  Future<void> loadPlaybackPrefs() async {
@@ -282,9 +283,9 @@ class SongProvider extends ChangeNotifier {
    } catch (e) {
      // ignore if not supported
    }
-   shuffle = !shuffle;
+   final savedShuffle = p.getBool('shuffle');
+   if (savedShuffle != null) shuffle = savedShuffle;
    notifyListeners();
-   _savePrefs();
  }
 
  void cycleRepeatMode() {
@@ -301,6 +302,12 @@ class SongProvider extends ChangeNotifier {
    }
    notifyListeners();
    _savePrefs();
+ }
+
+ void toggleShuffle() {
+   shuffle = !shuffle;
+   _savePrefs();
+   notifyListeners();
  }
 
  void toggleMute() {
