@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/song.dart';
+import '../homepage/services/api.dart';
+
+// Repeat mode for playback (off, repeat all, repeat one)
+enum RepeatMode { off, all, one }
 
 class SongProvider extends ChangeNotifier {
  // Playback controls
@@ -46,8 +50,110 @@ class SongProvider extends ChangeNotifier {
   List<Song> likedSongs = [];
   List<Song> likedLocals = [];
 
+  // Downloaded/offline songs
+  List<Song> downloadedSongs = [];
+
+  // Add a song to recently played list
+  void _addToRecentlyPlayed(Song song) {
+    recentlyPlayed.insert(0, song);
+    // keep a limited history
+    if (recentlyPlayed.length > 50) {
+      recentlyPlayed.removeLast();
+    }
+    notifyListeners();
+  }
+
+  // Download a song for offline play
+  Future<void> downloadSong(Song song) async {
+    final api = Api();
+    final path = await api.fetchSongFile(song);
+    if (path.isNotEmpty) {
+      song.filePath = path;
+      // avoid duplicates
+      final exists = downloadedSongs.any((s) => s.artist == song.artist && s.title == song.title);
+      if (!exists) {
+        downloadedSongs.add(song);
+        await saveToDownloadedSongs(downloadedSongs);
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<void> saveToDownloadedSongs(List<Song> songs) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> list = songs.map((s) => json.encode({
+          'artist': s.artist,
+          'title': s.title,
+          'genre': s.genre,
+          'release_date': s.releaseDate,
+          'audio_url': s.audioUrl,
+          'image_url': s.imageUrl,
+          'file_path': s.filePath,
+        })).toList();
+    await prefs.setStringList('downloaded-songs', list);
+  }
+
+  Future<void> fetchDownloadedFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final list = prefs.getStringList('downloaded-songs') ?? <String>[];
+    downloadedSongs = list.map((str) {
+      final m = json.decode(str) as Map<String, dynamic>;
+      return Song(
+        artist: m['artist'] ?? '',
+        title: m['title'] ?? '',
+        genre: m['genre'] ?? '',
+        releaseDate: m['release_date'] ?? '',
+        audioUrl: m['audio_url'],
+        imageUrl: m['image_url'],
+        filePath: m['file_path'],
+      );
+    }).toList();
+    notifyListeners();
+  }
+
+  bool isDownloaded(Song song) {
+    return downloadedSongs.any((s) => s.artist == song.artist && s.title == song.title);
+  }
+
+  // Queue helpers
+  void addToQueue(Song song) {
+    queue.add(song);
+    notifyListeners();
+  }
+
+  // Skip to next (uses queue)
+  Future<void> skipNext() async {
+    if (queue.isNotEmpty) {
+      final next = shuffle ? (queue..shuffle()).removeAt(0) : queue.removeAt(0);
+      final api = Api();
+      final path = await api.fetchSongFile(next);
+      if (path.isNotEmpty) {
+        await playSong(File(path), next);
+      }
+    }
+  }
+
+  // Skip to previous (uses recently played)
+  Future<void> skipPrevious() async {
+    if (recentlyPlayed.length >= 2) {
+      final prev = recentlyPlayed[1];
+      final api = Api();
+      final path = await api.fetchSongFile(prev);
+      if (path.isNotEmpty) {
+        await playSong(File(path), prev);
+        // remove the duplicated entry
+        recentlyPlayed.removeAt(1);
+      }
+    }
+  }
+
   SongProvider() {
     _audioPlayer.setVolume(_volume);
+    // Load persisted playback settings and stored lists
+    loadPlaybackPrefs();
+    fetchSongsFromStorage();
+    fetchLocalsFromStorage();
+    fetchDownloadedFromStorage();
 
     _audioPlayer.onDurationChanged.listen((Duration duration) {
       _duration = duration;
@@ -64,9 +170,8 @@ class SongProvider extends ChangeNotifier {
           _audioPlayer.seek(Duration.zero);
           _audioPlayer.resume();
         } else if (queue.isNotEmpty) {
-          final next = shuffle ? (queue..shuffle()).removeAt(0) : queue.removeAt(0);
-          // Note: requires external file fetching; here we just stop for simplicity
-          stopSong();
+          // play next in queue
+          skipNext();
         } else if (repeatMode == RepeatMode.all) {
           _audioPlayer.seek(Duration.zero);
           _audioPlayer.resume();
@@ -74,9 +179,11 @@ class SongProvider extends ChangeNotifier {
           stopSong();
         }
         if (playingFile != null) {
-          playingFile!.delete();
+          try {
+            playingFile?.delete();
+          } catch (e) {}
         }
-        _song = Song
+        _song = Song(
           artist: '',
           title: '',
           genre: '',
