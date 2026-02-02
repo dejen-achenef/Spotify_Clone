@@ -242,4 +242,24 @@ class Api {
     }
     return '';
   }
+
+  Future<String> fetchLyrics(Song song) async {
+    var dio = Dio();
+    final title = Uri.encodeComponent(song.title);
+    final artist = Uri.encodeComponent(song.artist);
+    final url = '$baseUrl/lyrics?title=$title&artist=$artist';
+    try {
+      final response = await dio.get(url);
+      if (response.statusCode == 200) {
+        // expecting { "lyrics": "..." }
+        if (response.data is Map && response.data['lyrics'] != null) {
+          return response.data['lyrics'].toString();
+        }
+        return response.data.toString();
+      }
+    } catch (e) {
+      print('Error fetching lyrics: $e');
+    }
+    return 'Lyrics not available.';
+  }
 }
