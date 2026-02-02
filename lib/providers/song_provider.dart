@@ -191,6 +191,9 @@ class SongProvider extends ChangeNotifier {
    notifyListeners();
  }
 
+ // Expose mute state to the UI
+ bool get isMuted => _volume == 0;
+
  void startSleepTimer(Duration duration) {
    _sleepTimer?.cancel();
    _sleepTimer = Timer(duration, () {
