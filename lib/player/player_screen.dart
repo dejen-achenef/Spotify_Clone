@@ -30,6 +30,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
   bool isLiked = false;
   bool isDisliked = false;
 
+  late double? _lastTapX;
+
   late SongProvider songProvider;
   @override
   void initState() {
@@ -260,9 +262,29 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                widget.song.imageUrl!,
-                                fit: BoxFit.cover,
+                              child: GestureDetector(
+                                onTapDown: (details) {
+                                  // store last tap local x to decide double tap side
+                                  _lastTapX = details.localPosition.dx;
+                                },
+                                onDoubleTap: () {
+                                  double width = MediaQuery.of(context).size.width * .8;
+                                  if (_lastTapX != null && _lastTapX! < width / 2) {
+                                    songProvider.seekBy(-10);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Seeked back 10s')),
+                                    );
+                                  } else {
+                                    songProvider.seekBy(10);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Seeked forward 10s')),
+                                    );
+                                  }
+                                },
+                                child: Image.network(
+                                  widget.song.imageUrl!,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
