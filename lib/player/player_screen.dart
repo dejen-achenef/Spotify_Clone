@@ -298,6 +298,38 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 ),
                                 const Spacer(),
                                 IconButton(
+                                  icon: Icon(
+                                    songProvider.isDownloaded(widget.song) ? Icons.cloud_done : Icons.cloud_download,
+                                  ),
+                                  onPressed: () async {
+                                    if (!songProvider.isDownloaded(widget.song)) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Downloading...')),
+                                      );
+                                      await songProvider.downloadSong(widget.song);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Downloaded for offline playback')),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Already downloaded')),
+                                      );
+                                    }
+                                    setState(() {});
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
+                                  icon: const Icon(Icons.playlist_add),
+                                  onPressed: () {
+                                    songProvider.addToQueue(widget.song);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Added to Queue')),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 10),
+                                IconButton(
                                   onPressed: () {
                                     bool isLocal = widget.isLocal ?? false;
                                     if (!isLiked) {
@@ -403,7 +435,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       size: 20,
                                     ),
                                     onPressed: () {
-                                      // Implement skip to previous song logic
+                                      songProvider.skipPrevious();
                                     },
                                   ),
                                 ),
@@ -435,7 +467,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       size: 20,
                                     ),
                                     onPressed: () {
-                                      // Implement skip to next song logic
+                                      songProvider.skipNext();
                                     },
                                   ),
                                 ),
