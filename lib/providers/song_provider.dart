@@ -244,6 +244,15 @@ class SongProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Seek forward/back by seconds
+  void seekBy(int seconds) {
+    Duration newPos = _position + Duration(seconds: seconds);
+    if (newPos < Duration.zero) newPos = Duration.zero;
+    if (newPos > _duration) newPos = _duration;
+    _audioPlayer.seek(newPos);
+    notifyListeners();
+  }
+
   IconData get playingIcon => _playingIcon;
 
  // Controls
