@@ -148,6 +148,59 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 },
                               ),
                               IconButton(
+                                icon: Icon(Icons.speed),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        ListTile(
+                                          title: const Text('0.5x'),
+                                          onTap: () async {
+                                            await songProvider.setPlaybackRate(0.5);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Playback speed set to 0.5x')),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('1.0x'),
+                                          onTap: () async {
+                                            await songProvider.setPlaybackRate(1.0);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Playback speed set to 1.0x')),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('1.5x'),
+                                          onTap: () async {
+                                            await songProvider.setPlaybackRate(1.5);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Playback speed set to 1.5x')),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('2.0x'),
+                                          onTap: () async {
+                                            await songProvider.setPlaybackRate(2.0);
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Playback speed set to 2.0x')),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              IconButton(
                                 icon: const Icon(Icons.timer),
                                 onPressed: () {
                                   showModalBottomSheet(
