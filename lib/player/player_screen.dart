@@ -130,7 +130,68 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           const Spacer(),
 
                           //PopupMenuButton(itemBuilder: (context)=>)
-                          Icon(Icons.menu),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.share),
+                                onPressed: () {
+                                  Share.share(
+                                    'Listening to ${widget.song.title} by ${widget.song.artist}\n${widget.song.audioUrl ?? ''}',
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(songProvider.isMuted ? Icons.volume_off : Icons.volume_up),
+                                onPressed: () {
+                                  songProvider.toggleMute();
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.timer),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        ListTile(
+                                          title: const Text('15 minutes'),
+                                          onTap: () {
+                                            songProvider.startSleepTimer(Duration(minutes: 15));
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Sleep timer set for 15 minutes')),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('30 minutes'),
+                                          onTap: () {
+                                            songProvider.startSleepTimer(Duration(minutes: 30));
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Sleep timer set for 30 minutes')),
+                                            );
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('60 minutes'),
+                                          onTap: () {
+                                            songProvider.startSleepTimer(Duration(minutes: 60));
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(content: Text('Sleep timer set for 60 minutes')),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                       //const Spacer(),
